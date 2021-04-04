@@ -1,6 +1,6 @@
-import React from "React"
+import React from "react"
 
-export const BookContext = React.createContext([
+export default React.createContext([
     {      
       title: "Kırmızı Pazartesi",
       author: "Gabriel Garcia Marquez",
