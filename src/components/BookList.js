@@ -1,30 +1,43 @@
 import React from "react"
 import Book from "./Book"
 import "./BookList.css"
-import BookContext from "../contexts/BookContext"
+import { BookContext } from "../contexts/BookContext"
+import { ThemeContext } from "../contexts/ThemeContext"
 
 class BookList extends React.Component {
-    static contextType = BookContext;
 
     render() {
-        const books = this.context;
         return (
-
-            <section className="page-section bg-light" id="portfolio">
-                <div className="container">
-                    <div className="text-center">
-                        <h2 className="section-heading text-uppercase">BookFolio</h2>
-                        <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                    </div>
-                    <div className="row">
-                        {books.map((book, i) => {
-                            return <Book book={book}
-                                key={i}
-                            />
-                        })}
-                    </div>
-                </div>
-            </section>
+            <ThemeContext.Consumer>{(contextTheme) => (
+                <BookContext.Consumer>
+                
+                    {contextBook => {
+                        const {books}=contextBook;
+                        const {changeTheme,isDarkTheme,dark,light}=contextTheme;
+                        const theme=isDarkTheme ? dark : light;
+                        return (
+                            <section className="page-section" style={{background:theme.bg,color:theme.txt}} id="portfolio">
+                                <div className="container">
+                                    <div className="text-center">
+                                        <h2 className="section-heading text-uppercase">BookFolio</h2>
+                                        <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                                        <button className="btn btn-dark" onClick={changeTheme}>Change</button>
+                                    </div>
+                                    <div className="row">
+                                        {books.map((book, i) => {
+                                            return <Book book={book}
+                                                key={i}
+                                            />
+                                        })}
+                                    </div>
+                                </div>
+                            </section>
+                        )
+                    }
+                    }
+                </BookContext.Consumer>
+            )}
+            </ThemeContext.Consumer>
         )
 
     }
